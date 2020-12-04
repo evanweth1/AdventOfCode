@@ -1,0 +1,30 @@
+Sub CleanInput()
+    Dim passport As String
+    Dim countBlank As Integer
+    Dim rw As Object
+    Dim myRow As Integer
+    
+    myRow = 2
+    
+    Sheet2.Cells.Clear
+    Sheet2.Cells(1, 1) = "Input"
+    
+    For Each rw In Sheet1.Rows
+        If Sheet1.Cells(rw.Row, 1) = "" Then
+            Sheet2.Cells(myRow, 1) = passport
+            myRow = myRow + 1
+            
+            countBlank = countBlank + 1
+            
+            passport = ""
+            
+            If countBlank >= 2 Then
+                Exit For
+            End If
+        Else
+            countBlank = 0
+        End If
+        
+        passport = passport + " " + Cells(rw.Row, 1)
+    Next rw
+End Sub
