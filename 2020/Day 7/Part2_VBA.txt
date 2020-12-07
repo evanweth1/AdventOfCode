@@ -1,0 +1,22 @@
+Sub SGBTree()
+    bagDesc = "shiny gold"
+    MsgBox countBags(bagDesc) - 1
+End Sub
+
+Function countBags(inText)
+    inBag = WorksheetFunction.VLookup(inText, Sheet3.Range("A:B"), 2, False)
+    
+    If InStr(inBag, "no other") Then
+        countBags = 1
+        Exit Function
+    End If
+        
+    Total = 1
+    inBagVar = Split(Replace(Replace(Replace(inBag, ".", ""), " bags", ""), " bag", ""), ", ")
+    For Each bag In inBagVar
+        Count = Int(Left(bag, 1))
+        Total = Total + Count * countBags(Mid(bag, 3))
+    Next bag
+    
+    countBags = Total
+End Function
