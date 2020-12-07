@@ -1,0 +1,48 @@
+Sub AocDay7()
+    Dim inputText As String
+    Dim rw As Object
+    Dim bagVariant As Variant
+    Dim subBagVariant As Variant
+    Dim hasSGB As String
+    Dim myRow As Integer
+    
+    myRow = 1
+    
+    For Each rw In Sheet1.Rows
+        If Sheet1.Cells(rw.Row, 1) = "" Then
+            Exit For
+        End If
+        
+        bagVariant = Split(Sheet1.Cells(rw.Row, 1), " bags contain ", , vbTextCompare)
+        
+        Sheet3.Cells(myRow, 1) = bagVariant(0)
+        Sheet3.Cells(myRow, 2) = bagVariant(1)
+        myRow = myRow + 1
+    Next rw
+    
+    For Each col In Sheet3.Columns
+        myRow = 1
+        If col.Column > 2 Then
+            If Sheet3.Cells(1, col.Column) = "" Then
+                Exit For
+            End If
+            
+            For Each rw In Sheet3.Rows
+                If Sheet3.Cells(rw.Row, col.Column) = "" Then
+                    Exit For
+                End If
+                
+                For Each searchRow In Sheet3.Rows
+                    If Sheet3.Cells(searchRow.Row, 1) = "" Then
+                        Exit For
+                    End If
+                    
+                    If InStr(Sheet3.Cells(searchRow.Row, 2), Sheet3.Cells(rw.Row, col.Column)) > 0 Then
+                        Sheet3.Cells(myRow, col.Column + 1) = Sheet3.Cells(searchRow.Row, 1)
+                        myRow = myRow + 1
+                    End If
+                Next searchRow
+            Next rw
+        End If
+    Next col
+End Sub
