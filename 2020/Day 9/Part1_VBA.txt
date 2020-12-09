@@ -1,0 +1,37 @@
+Sub AoC2020Day9Part1()
+    Dim last25sum(300)
+    Dim last25 As Variant
+    
+    For Each rw In Sheet1.Rows
+        If Sheet1.Cells(rw.Row, 1) = "" Then
+            Exit For
+        End If
+        
+        If rw.Row >= 26 Then
+            last25 = Sheet1.Range("A" & rw.Row - 25, "A" & rw.Row - 1).Value
+            Position = 0
+            For i = LBound(last25) To UBound(last25)
+                For j = i + 1 To 25
+                    last25sum(Position) = last25(j, 1) + last25(i, 1)
+                    Position = Position + 1
+                Next j
+            Next i
+            
+            If IsInArray(Sheet1.Cells(rw.Row, 1), last25sum) = False Then
+                MsgBox "Part 1: " & Sheet1.Cells(rw.Row, 1)
+            End If
+        End If
+    Next rw
+End Sub
+
+Public Function IsInArray(stringToBeFound As String, arr As Variant) As Boolean
+    Dim i
+    For i = LBound(arr) To UBound(arr)
+        If arr(i) = stringToBeFound Then
+            IsInArray = True
+            Exit Function
+        End If
+    Next i
+    IsInArray = False
+
+End Function
